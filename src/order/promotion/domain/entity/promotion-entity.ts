@@ -31,7 +31,7 @@ export class Promotion {
 
     this.name = promotion.name;
     this.code = promotion.code;
-    this.amount = promotion.amount ?? 1500; // Si le montant n'est pas spécifié, il est mis à 1500 par défaut
+    this.amount = promotion.amount ?? 1500;
   }
 
   updatePromotion(name: string, code: string, amount?: number) {

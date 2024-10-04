@@ -1,34 +1,49 @@
 import { CreateOrderService } from './create-order.service';
 import { OrderRepositoryInterface } from '../../domain/port/persistance/order.repository.interface';
-import { Order } from '../../domain/entity/order.entity';
+import { BadRequestException } from '@nestjs/common';
 
 class OrderRepositoryFake {
-  async save(order: Order): Promise<Order> {
+  async save(order) {
     return order;
   }
 }
 
-const orderRepositoryFake =
-  new OrderRepositoryFake() as OrderRepositoryInterface;
+describe('CreateOrderService', () => {
+  let createOrderService: CreateOrderService;
+  let orderRepositoryFake: OrderRepositoryInterface;
 
-describe("an order can't be created if the order have more than 5 item", () => {
-  it('should return an error', async () => {
-    const createOrderService = new CreateOrderService(orderRepositoryFake);
+  beforeEach(() => {
+    orderRepositoryFake = new OrderRepositoryFake() as OrderRepositoryInterface;
+    createOrderService = new CreateOrderService(orderRepositoryFake);
+  });
 
+  it('should throw an error if the order has more than 5 items', async () => {
     await expect(
       createOrderService.execute({
         customerName: 'John Doe',
         items: [
-          { productName: 'item 1', price: 10, quantity: 1 },
-          { productName: 'item 1', price: 10, quantity: 1 },
-          { productName: 'item 1', price: 10, quantity: 1 },
-          { productName: 'item 1', price: 10, quantity: 1 },
-          { productName: 'item 1', price: 10, quantity: 1 },
-          { productName: 'item 1', price: 10, quantity: 1 },
+          { productId: '1', price: 10, quantity: 1 },
+          { productId: '2', price: 10, quantity: 1 },
+          { productId: '3', price: 10, quantity: 1 },
+          { productId: '4', price: 10, quantity: 1 },
+          { productId: '5', price: 10, quantity: 1 },
+          { productId: '6', price: 10, quantity: 1 }, // exceeds the limit
         ],
         shippingAddress: 'Shipping Address',
         invoiceAddress: 'Invoice Address',
       }),
-    ).rejects.toThrow();
+    ).rejects.toThrow(BadRequestException);
+  });
+
+  it('should create an order if it is valid', async () => {
+    const order = await createOrderService.execute({
+      customerName: 'John Doe',
+      items: [{ productId: '1', price: 50, quantity: 1 }],
+      shippingAddress: 'Shipping Address',
+      invoiceAddress: 'Invoice Address',
+    });
+
+    expect(order).toBeDefined();
+    expect(order.customerName).toBe('John Doe');
   });
 });
