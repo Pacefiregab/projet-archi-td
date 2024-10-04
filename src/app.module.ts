@@ -5,8 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { OrderModule } from './order/order.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { ProductModule } from './order/porduct/product.module';
-import { PromotionModule } from './order/promotion/promotion.module';
+import { ProductModule } from './product/product.module';
+import { PromotionModule } from './promotion/promotion.module';
 
 @Module({
   imports: [

@@ -4,11 +4,11 @@ import { Promotion } from "./domain/entity/promotion-entity";
 import PromotionController from "./infrastructure/presentation/promotion.controller";
 import { PromotionRepository } from "./infrastructure/persistance/promotion.repository";
 import { ApplyPromotionService } from "./application/use-case/apply-promotion.service";
-import { OrderRepositoryInterface } from "../domain/port/persistance/order.repository.interface";
 import { PromotionRepositoryInterface } from "./domain/port/promotion-repository.interface";
-import { OrderRepositoryTypeOrm } from "../infrastructure/persistance/order.repository";
 import { CreatePromotionService } from "./application/use-case/create-promotion.service";
 import { ListPromotionsService } from "./application/use-case/list-promotion.service";
+import { OrderRepositoryTypeOrm } from "src/order/infrastructure/persistance/order.repository";
+import { OrderRepositoryInterface } from "src/order/domain/port/persistance/order.repository.interface";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Promotion])],

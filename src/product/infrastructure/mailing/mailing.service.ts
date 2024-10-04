@@ -1,4 +1,5 @@
-import { MailingServiceInterface } from "src/order/porduct/domain/port/mailing.service.interface";
+import { MailingServiceInterface } from "src/product/domain/port/mailing.service.interface";
+
 
 export class MailingService implements MailingServiceInterface {
     async sendEmail(email: string, subject: string, body: string): Promise<void> {
